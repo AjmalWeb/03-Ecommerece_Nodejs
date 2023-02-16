@@ -1,8 +1,6 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-const bcrypt = require('bcryptjs');
+"use strict";
+const { Model } = require("sequelize");
+const bcrypt = require("bcryptjs");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -13,45 +11,61 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.belongsTo(models.Role, {
-        foreignKey: 'role_id'
+        foreignKey: "role_id",
       });
     }
-  };
-  User.init({
-    role_id: DataTypes.INTEGER,
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+  }
+  User.init(
+    {
+      role_id: DataTypes.INTEGER,
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      fullname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    fullname: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    phone:  {
-      type: DataTypes.STRING,
-      allowNull: true
+    {
+      sequelize,
+      modelName: "User",
     }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  );
   User.beforeSave(async (user, options) => {
     if (user.password) {
-      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+      user.password = bcrypt.hashSync(
+        user.password,
+        bcrypt.genSaltSync(10),
+        null
+      );
     }
   });
-  User.prototype.comparePassword = function (passw, cb) {
-    bcrypt.compare(passw, this.password, function (err, isMatch) {
-        if (err) {
-            return cb(err);
-        }
-        cb(null, isMatch);
-    });
+  User.prototype.comparePassword = async function (canditatePassword) {
+    const isMatch = await bcrypt.compare(canditatePassword, this.password);
+    return isMatch;
   };
+
+  // User.prototype.comparePassword = function (passw, cb) {
+  //   bcrypt.compare(passw, this.password, function (err, isMatch) {
+  //       if (err) {
+  //           return cb(err);
+  //       }
+  //       cb(null, isMatch);
+  //   });
+  // };
   return User;
 };

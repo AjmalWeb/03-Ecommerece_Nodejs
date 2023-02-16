@@ -36,6 +36,7 @@ router.post('/', passport.authenticate('jwt', {
 router.get('/', passport.authenticate('jwt', {
     session: false
 }), function (req, res) {
+    console.log("permisoim")
     helper.checkPermission(req.user.role_id, 'permissions_get_all').then((rolePerm) => {
         Permission
             .findAll()

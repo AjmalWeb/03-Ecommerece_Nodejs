@@ -1,22 +1,22 @@
 {
   "development": {
     "username": "root",
-    "password": "root",
-    "database": "node_app",
+    "password": "12345",
+    "database": "user_auth_db_git_sample",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "root",
-    "database": "node_app_test",
+    "password": "12345",
+    "database": "user_auth_db_git_sample",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "root",
-    "database": "node_app_production",
+    "password": "12345",
+    "database": "user_auth_db_git_sample",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

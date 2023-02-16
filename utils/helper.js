@@ -1,6 +1,9 @@
 const RolePermission = require('../models').RolePermission;
 const Permission = require('../models').Permission;
 
+const { StatusCodes } = require("http-status-codes");
+const CustomError = require("../errors");
+
 class Helper {
     constructor() {}
 
@@ -22,13 +25,15 @@ class Helper {
                         if(rolePermission) {
                             resolve(rolePermission);
                         } else {
-                            reject({message: 'Forbidden'});
+                            // reject({message: 'Forbidden'});
+                            throw new CustomError.UnauthenticatedError("Forbidden user");
                         }
                     }).catch((error) => {
                         reject(error);
                     });
                 }).catch(() => {
-                    reject({message: 'Forbidden'});
+                    // reject({message: 'Forbidden'});
+                    throw new CustomError.UnauthenticatedError("Forbidden user");
                 });
             }
         );
